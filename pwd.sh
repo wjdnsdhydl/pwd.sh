@@ -17,7 +17,7 @@ backuptar="${PWDSH_BACKUP:=pwd.$(hostname).$(date +%F).tar}"
 safeix="${PWDSH_INDEX:=pwd.index}"
 safedir="${PWDSH_SAFE:=safe}"
 script="$(basename $BASH_SOURCE)"
-timeout=10
+timeout=7
 
 fail () {
   # Print an error message and exit.
@@ -112,7 +112,7 @@ write_pass () {
   Password to unlock ${safeix}: " ; done
   printf "\n"
 
-  fpath=$(tr -dc "[:lower:]" < /dev/urandom | fold -w8 | head -n1)
+  fpath=$(LC_CTYPE=C tr -dc "[:lower:]" < /dev/urandom | fold -w8 | head -n1)
   spath=${safedir}/${fpath}
   printf '%s\n' "${userpass}" | \
     encrypt "${password}" "${spath}" - || \
